@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+       
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <another-component></another-component>
+            <my-component v-for="i in 100"></my-component>
+        </div>
+    </div>
+    <script>
+        var anothrcomponent={
+            data(){
+                return{
+                    msg:'hello vue from another comp...'
+                }
+            },
+            template:' <h2>{{ msg }}</h2>'
+        }
+        Vue.component('my-component',{
+            template: '<strong>A static element...</strong>'
+
+        })
+        var vm = new Vue({
+          el:'#app',
+          components:{
+              'another-component':anothrcomponent
+          }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Array.concat
+        const array1 = ['a', 'b', 'c'];
+            const array2 = ['d', 'e', 'f'];
+            const array3 = array1.concat(array2);
+            console.log(array3);
+// expected output: Array ["a", "b", "c", "d", "e", "f"]
+    var alpha = ['a', 'b', 'c'];
+    var numeric = [1, 2, 3];
+   console.log(alpha.concat(numeric));
+// result in ['a', 'b', 'c', 1, 2, 3]
+    var num1 = [[1]];
+    var num2 = [2, [3]];
+
+    var nums = num1.concat(num2);
+
+    console.log(nums);
+    // results in [[1], 2, [3]]
+
+    // modify the first element of num1
+    num1[0].push(4);
+
+    console.log(nums);
+// results in [[1, 4], 2, [3]]
+    const array12 = ['a', 'b', 'c', 'd', 'e'];
+
+    // copy to index 0 the element at index 3
+    console.log(array12.copyWithin(0, 3, 4));
+// expected output: Array ["d", "b", "c", "d", "e"]
+    console.log(array12.copyWithin(1, 3));
+    var a = ['a', 'b', 'c'];
+    var iterator = a.entries();
+
+    for (let e of iterator) {
+        console.log(e);
+    }
+    const isBelowThreshold = (currentValue) => currentValue >40;
+
+    const array13 = [1, 30, 39, 29, 133, 13];
+
+        console.log(array13.every(isBelowThreshold));
+// expected output: true
+    const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+
+    const result = words.filter(word => word.length > 6);
+
+    console.log(result);
+// expected output: Array ["exuberant", "destruction", "present"]
+    const arra1 = [5, 12, 8, 130, 44];
+console.log(arra1.includes('jf'));
+    console.log(arra1.indexOf('12'));
+
+    const found = arra1.find(element => element > 10);
+    const isLargeNumber = (element) => element > 13;
+
+    console.log(found);
+    console.log(arra1.findIndex(isLargeNumber));
+    arra1.forEach(element => console.log(element));
+    console.log(Array.from('foo'));
+    console.log(Array.from([1, 2, 3], x => x + x));
+
+// expected output: 12
+    const beasts = ['ant', 'bison', 'camel', 'duck', 'bison'];
+
+    console.log(beasts.indexOf('1'));
+// expected output: 1
+    const elements = ['Fire', 'Air', 'Water'];
+
+    console.log(elements.join());
+    // expected output: "Fire,Air,Water"
+
+    console.log(elements.join(''));
+    // expected output: "FireAirWater"
+
+    console.log(elements.join('-'));
+// expected output: "Fire-Air-Water"
+    const ar = [1, 4, 9, 16];
+
+    // pass a function to map
+    const map1 = ar.map(x => x * 2);
+
+    console.log(map1);
+// expected output: Array [2, 8, 18, 32]
+    const a2 = [1, 2, 3, 4];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+    // 1 + 2 + 3 + 4
+    console.log(a2.reduce(reducer));
+    // expected output: 10
+
+    // 5 + 1 + 2 + 3 + 4
+    console.log(a2.reduce(reducer, 5));
+// expected output: 15
+    const y = [[0, 1], [2, 3], [4, 5]].reduceRight(
+        (accumulator, currentValue) => accumulator.concat(currentValue)
+    );
+    console.log(y);
+// expected output: Array [4, 5, 2, 3, 0, 1]
+    const arraby1 = [1, 'a', new Date('21 Dec 1997 14:12:00 UTC')];
+    const localeString = arraby1.toLocaleString('en', { timeZone: 'UTC' });
+
+    console.log(localeString);
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .highlight {
+            border: solid 3px red;
+            color: red
+        }
+        .shooting-star-leave-to, .shooting-star-enter{
+            transform:  translate(40px) rotate(40deg);
+            opacity: 0;
+        }
+        .shooting-star-enter-active,.shooting-star-leave-active{
+            transition: all .5s ease;
+        }
+        .neo-list-leave-to, .neo-list-enter{
+            opacity: 0;
+            transform: translate(40px) rotate(40deg);
+        }
+        .neo-list-enter-active, .neo-list-leave-active{
+            transition: all .5s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="card mt-5">
+                <h2 class="card-header">Near-Earch Objects</h2>
+                <transition name="shooting-star">
+                <div class="m-3" v-cloak v-if="numAsteroids>0 && showSummary">
+                    <p>showing {{ numAsteroids }} items</p>
+                    <p>{{ closestObject }} has the shortest miss distance</p>
+                </div>
+                </transition>
+                <!-- <div class="m-3" v-cloak v-if="numAsteroids>0 && showSummary">
+                    <p>showing {{ numAsteroids }} items</p>
+                    <p>{{ closestObject }} has the shortest miss distance</p>
+                </div> -->
+                <div class="m-3">
+                    <a href="#" @click="showSummary =! showSummary" >Show/hide summary</a>
+                </div>
+                <table class="table table-striped" :class="[{'table-dark':false},'table-border']">
+                    <thead class="thead-light">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Close Approach Date</th>
+                        <th>Close Approach Date full</th>
+                        <th>Miss distance</th>
+                        <th>Action</th>
+                    </thead>
+                        <tbody is="transition-group" tag="tbody" name="neo-list" v-cloak>
+                        
+                        <tr v-for="(a,index) in asteriods" :key="a.neo_reference_id"
+                            :class="{highlight: isMissingData(a), 'shadow-sm': true}">
+                            <td>{{ index+1 }}</td>
+                            <td>{{ a.name }}</td>
+                            <td>{{ getcloseApproachDate(a) }}</td>
+                            <td>{{ getcloseApproachDatefull(a) }}</td>
+                            <td>
+                                <ul v-if="a.close_approach_data.length > 0">
+                                    <li v-for="(value, key, index) in a.close_approach_data[0].miss_distance">
+                                        {{ key }}:{{ value }}
+                                    </li>
+                                </ul>
+
+                            </td>
+                            <td>
+                                <button @click="remove(index)" class="btn btn-warning">remove</button>
+                            </td>
+                           </tr>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                asteriods: [],
+                showSummary:true
+            },
+            computed: {
+                numAsteroids() {
+                    return this.asteriods.length
+                },
+                closestObject() {
+                    var neosHavingData = this.asteriods.filter(function (neo) {
+                        return neo.close_approach_data.length > 0
+                    });
+                    var simpleNeos = neosHavingData.map((neo) => {
+                        return { name: neo.name, miles: neo.close_approach_data[0].miss_distance.miles }
+                    })
+                    var sortedNeos = simpleNeos.sort((a, b) => {
+                        return a.miles = b.miles
+                    })
+                    return sortedNeos
+                }
+            },
+            created() {
+                this.fetchAstoriods();
+            },
+            methods: {
+                fetchAstoriods() {
+                    var apiKey = 'Nmc13eIAadJNfuAwRjk2GlpAHAUvafDtSsej4ZUx'
+                    var url = 'https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=' + apiKey
+                    axios.get(url)
+                        .then(function (res) {
+                            vm.asteriods = res.data.near_earth_objects.slice(0, 10);
+                        })
+                },
+                getcloseApproachDate(a) {
+                    if (a.close_approach_data.length > 0) {
+                        return a.close_approach_data[0].close_approach_date
+                    }
+                    return "N/A";
+                },
+                getcloseApproachDatefull(a) {
+                    if (a.close_approach_data.length > 0) {
+                        return a.close_approach_data[0].close_approach_date_full
+                    } else {
+                        return "N/A"
+                    }
+                },
+                remove(index) {
+                    this.asteriods.splice(index, 1)
+                },
+                getRowstyle(a) {
+                    if (a.close_approach_data.length == 0) {
+                        return {
+                            border: '2px solid red',
+                            color: 'red'
+                        }
+                    }
+                },
+                isMissingData(a) {
+                    return a.close_approach_data.length == 0
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

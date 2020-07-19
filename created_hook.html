@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <img :src="imgSrc" :title="imgTitle" alt="">
+        </div>
+
+    </div>
+    <script>
+       
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                imgSrc: '',
+                imgTitle: ''
+            },
+            created() {
+                this.fetchApod();
+            },
+            methods: {
+                fetchApod(){
+                     var apiKey = 'Nmc13eIAadJNfuAwRjk2GlpAHAUvafDtSsej4ZUx'
+                    var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey
+                    axios.get(url)
+                        .then(function (res) {
+                            vm.imgSrc = res.data.url
+                            vm.imgTitle = res.data.title
+                        })
+                }
+            },
+        });
+        
+    </script>
+</body>
+
+</html>
