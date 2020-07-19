@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex"></script>
+
+
+</head>
+<body>
+    <div id="app">
+<h1>{{ wc}}</h1>
+<h2>
+    {{ msg }}
+</h2>
+<h3>{{ count }}</h3>
+
+
+<button @click="pressed">Increment counter</button>
+    </div>
+    <script>
+        const store=new Vuex.Store({
+state:{
+    msg:'hello from state of vuex',
+   count:0
+}, getters: {
+   msg(state){
+      return state.msg.toUpperCase()
+   },
+   count(state){
+       return state.count
+   }
+
+   
+},
+mutations:{//syncronous
+   Increment(state,payload){
+         state.count+=payload
+   }
+   
+},
+actions:{//asyncronous
+    Increment2(state,payload){
+            state.commit('Increment',payload)
+    }
+}
+
+        })
+
+       new Vue({
+           el:'#app',
+           data() {
+               return {
+                   wc:"hellop world"
+               }
+           },
+           computed: {
+               msg(){
+                   return store.getters.msg
+               },
+               count(){
+                   return store.getters.count
+               }
+               
+           },
+           methods:{
+               pressed(){
+                   store.dispatch('Increment2',20)
+               }
+           }
+       })
+    </script>
+</body>
+</html>
